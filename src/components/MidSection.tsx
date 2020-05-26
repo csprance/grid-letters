@@ -36,7 +36,7 @@ const Right = styled.div`
 `;
 
 interface Props {}
-const MidSection: React.FunctionComponent<Props> = ({}) => {
+const MidSection: React.FunctionComponent<Props> = () => {
   const dispatch = useAppDispatch();
   const data = useSelector(dataSelector);
   const saved = useSelector(savedSelector);

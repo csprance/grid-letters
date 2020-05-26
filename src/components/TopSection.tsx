@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 `;
 
 interface Props {}
-const TopSection: React.FunctionComponent<Props> = ({}) => {
+const TopSection: React.FunctionComponent<Props> = () => {
   const dispatch = useAppDispatch();
   const columns = useSelector(columnsSelector);
   return (

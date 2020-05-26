@@ -28,7 +28,7 @@ const SavedWrapper = styled.div`
 `;
 
 interface Props {}
-const BottomSection: React.FunctionComponent<Props> = ({}) => {
+const BottomSection: React.FunctionComponent<Props> = () => {
   const dispatch = useAppDispatch();
   const data = useSelector(dataSelector);
   const saved = useSelector(savedSelector);
