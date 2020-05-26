@@ -1,6 +1,10 @@
 import * as React from "react";
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
+import { useAppDispatch } from "../redux";
+import * as appActions from "../redux/app/actions";
+import { useSelector } from "react-redux";
+import { columnsSelector } from "../redux/app/selectors";
 
 const Wrapper = styled.div`
   display: flex;
@@ -10,14 +14,10 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-interface Props {
-  columns: number;
-  setColumns: (columns: number) => void;
-}
-const TopSection: React.FunctionComponent<Props> = ({
-  columns,
-  setColumns,
-}) => {
+interface Props {}
+const TopSection: React.FunctionComponent<Props> = ({}) => {
+  const dispatch = useAppDispatch();
+  const columns = useSelector(columnsSelector);
   return (
     <Wrapper>
       Columns:{" "}
@@ -25,7 +25,9 @@ const TopSection: React.FunctionComponent<Props> = ({
         type={"text"}
         name={"columns"}
         value={columns}
-        onChange={(e) => setColumns(Number(e.target.value))}
+        onChange={(e) =>
+          dispatch(appActions.setColumns(Number(e.target.value)))
+        }
       />
     </Wrapper>
   );

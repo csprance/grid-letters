@@ -25,27 +25,19 @@ interface Props {
   rows: number;
   columns: number;
   data: Array<number>;
-  setData: (data: Array<number>) => void;
+  toggleDataIndex: (index: number) => void;
 }
 const Grid: React.FunctionComponent<Props> = ({
   rows,
   columns,
   data,
-  setData,
+  toggleDataIndex,
 }) => {
-  const toggleDataValue = (idx: number) => {
-    const newData = [...data];
-    newData[idx] = Number(!Boolean(data[idx]));
-    console.log(data);
-    console.log(newData);
-    setData(newData);
-  };
-
   return (
     <Wrapper rows={rows} columns={columns} data={data}>
       {Array.from(Array(rows * columns).keys()).map((c, idx) => (
         <Item
-          onClick={() => toggleDataValue(idx)}
+          onClick={() => toggleDataIndex(idx)}
           value={data[idx]}
           key={idx}
         />

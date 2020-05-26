@@ -4,6 +4,16 @@ import Grid from "./Grid";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
+import { useAppDispatch } from "../redux";
+import * as appActions from "../redux/app/actions";
+import { useSelector } from "react-redux";
+import {
+  columnsSelector,
+  dataSelector,
+  rowsSelector,
+  savedSelector,
+} from "../redux/app/selectors";
+
 const Wrapper = styled.div`
   display: flex;
   width: 100%;
@@ -25,32 +35,17 @@ const Right = styled.div`
   display: flex;
 `;
 
-interface Props {
-  rows: number;
-  columns: number;
-  data: Array<number>;
-  setRows: (num: number) => void;
-  setData: (data: Array<number>) => void;
-  setColumns: (num: number) => void;
-  save: (data: Array<Array<number>>) => void;
-  saved: Array<Array<number>>;
-}
-const MidSection: React.FunctionComponent<Props> = ({
-  rows,
-  setRows,
-  data,
-  setData,
-  columns,
-  setColumns,
-  save,
-  saved,
-}) => {
-  const clearData = () =>
-    setData(Array.from(Array(rows * columns).keys()).fill(0));
-  const saveData = () => {
-    console.log(saved);
-    save([...saved, data]);
-  };
+interface Props {}
+const MidSection: React.FunctionComponent<Props> = ({}) => {
+  const dispatch = useAppDispatch();
+  const data = useSelector(dataSelector);
+  const saved = useSelector(savedSelector);
+  const rows = useSelector(rowsSelector);
+  const columns = useSelector(columnsSelector);
+  const clearData = () => dispatch(appActions.clearData());
+  const saveData = () => dispatch(appActions.setSaved([...saved, data]));
+  const toggleDataIndex = (index: number) =>
+    dispatch(appActions.toggleDataIndex(index));
 
   return (
     <Wrapper>
@@ -63,7 +58,12 @@ const MidSection: React.FunctionComponent<Props> = ({
         </Button>
       </Left>
       <Middle>
-        <Grid setData={setData} rows={rows} columns={columns} data={data} />
+        <Grid
+          toggleDataIndex={toggleDataIndex}
+          rows={rows}
+          columns={columns}
+          data={data}
+        />
       </Middle>
       <Right>
         Rows:{" "}
@@ -71,7 +71,7 @@ const MidSection: React.FunctionComponent<Props> = ({
           type={"text"}
           name={"rows"}
           value={rows}
-          onChange={(e) => setRows(Number(e.target.value))}
+          onChange={(e) => dispatch(appActions.setRows(Number(e.target.value)))}
         />
       </Right>
     </Wrapper>

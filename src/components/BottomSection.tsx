@@ -1,8 +1,18 @@
 import * as React from "react";
 import styled from "styled-components";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+
 import ClickableMiniGrid from "./ClickableMiniGrid";
+import { useAppDispatch } from "../redux";
+import { useSelector } from "react-redux";
+import {
+  columnsSelector,
+  dataSelector,
+  rowsSelector,
+  savedSelector,
+} from "../redux/app/selectors";
+import * as appActions from "../redux/app/actions";
+import { Data } from "../redux/app/types";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,20 +27,15 @@ const SavedWrapper = styled.div`
   flex-wrap: wrap;
 `;
 
-interface Props {
-  rows: number;
-  columns: number;
-  data: Array<number>;
-  setData: (num: Array<number>) => void;
-  saved: Array<Array<number>>;
-}
-const BottomSection: React.FunctionComponent<Props> = ({
-  data,
-  setData,
-  saved,
-  rows,
-  columns,
-}) => {
+interface Props {}
+const BottomSection: React.FunctionComponent<Props> = ({}) => {
+  const dispatch = useAppDispatch();
+  const data = useSelector(dataSelector);
+  const saved = useSelector(savedSelector);
+  const rows = useSelector(rowsSelector);
+  const columns = useSelector(columnsSelector);
+  const setData = (data: Data) => dispatch(appActions.setData(data));
+
   return (
     <Wrapper>
       <div>
@@ -42,12 +47,12 @@ const BottomSection: React.FunctionComponent<Props> = ({
         />
       </div>
       <SavedWrapper>
-        {saved.map((s, idx) => (
+        {saved.map((savedData, idx) => (
           <div key={idx} style={{ padding: 10 }}>
             <ClickableMiniGrid
               setData={setData}
               rows={rows}
-              data={s}
+              data={savedData}
               columns={columns}
             />
           </div>
